@@ -3,6 +3,7 @@
 import * as vscode from 'vscode';
 import * as commands from './commands';
 import { detectConfigChanges } from './helpers/changeDetection';
+import { setExtensionContext } from './helpers/index';
 import { checkThemeStatus, versionKey } from './helpers/versioning';
 import * as i18n from './i18n';
 import { showStartMessages } from './messages/start';
@@ -13,6 +14,11 @@ import { showStartMessages } from './messages/start';
  */
 export const activate = async (context: vscode.ExtensionContext) => {
   try {
+    // Capture the context first: the config/versioning helpers resolve the
+    // extension's own identity through it, and both checkThemeStatus and
+    // detectConfigChanges below depend on that being available.
+    setExtensionContext(context);
+
     await i18n.initTranslations();
     context.globalState.setKeysForSync([versionKey]);
     const status = await checkThemeStatus(context.globalState);

@@ -57,8 +57,7 @@ const updateExtensionVersionInMemento = (state: vscode.Memento) => {
 
 /** Get the current version of the extension */
 const getCurrentExtensionVersion = (): string => {
-  return vscode.extensions.getExtension('PKief.material-icon-theme').packageJSON
-    .version;
+  return helpers.getExtensionContext().extension.packageJSON.version;
 };
 
 /**

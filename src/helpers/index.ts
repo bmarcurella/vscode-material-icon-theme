@@ -5,6 +5,35 @@ import { iconJsonName } from '../icons/index';
 import { IconConfiguration } from '../models/index';
 import * as reloadMessages from './../messages/reload';
 
+/**
+ * The extension context captured during activation.
+ *
+ * We keep a single module-level reference (set once by `setExtensionContext`
+ * in `activate`) so the helpers below can resolve the extension's *own*
+ * identity — id, packageJSON, and install path — at runtime. This replaces
+ * hardcoded `getExtension('PKief.material-icon-theme')` lookups, which broke
+ * in this fork: the fork ships under a different id, so those lookups
+ * returned `undefined` (or, worse, resolved to the upstream extension if it
+ * happened to be installed alongside).
+ */
+let extensionContext: vscode.ExtensionContext | undefined;
+
+/** Store the activation context so the helpers can reference the extension itself. */
+export const setExtensionContext = (context: vscode.ExtensionContext) => {
+  extensionContext = context;
+};
+
+/**
+ * Get the captured extension context.
+ * @throws if called before `activate` has run `setExtensionContext`.
+ */
+export const getExtensionContext = (): vscode.ExtensionContext => {
+  if (!extensionContext) {
+    throw new Error('Material Icons: extension context is not initialized');
+  }
+  return extensionContext;
+};
+
 /** Get configuration of vs code. */
 export const getConfig = (section?: string) => {
   return vscode.workspace.getConfiguration(section);
@@ -12,8 +41,8 @@ export const getConfig = (section?: string) => {
 
 /** Get list of configuration entries of package.json */
 export const getConfigProperties = (): { [config: string]: any } => {
-  return vscode.extensions.getExtension('PKief.material-icon-theme').packageJSON
-    .contributes.configuration.properties;
+  return getExtensionContext().extension.packageJSON.contributes.configuration
+    .properties;
 };
 
 /** Update configuration of vs code. */
@@ -60,8 +89,7 @@ export const isThemeNotVisible = (): boolean => {
 };
 
 /** Return the path of the extension in the file system. */
-export const getExtensionPath = () =>
-  vscode.extensions.getExtension('PKief.material-icon-theme').extensionPath;
+export const getExtensionPath = () => getExtensionContext().extensionPath;
 
 /** Get the configuration of the icons as JSON Object */
 export const getMaterialIconsJSON = (): IconConfiguration => {

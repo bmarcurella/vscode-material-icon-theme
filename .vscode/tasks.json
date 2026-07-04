@@ -6,8 +6,20 @@
     {
       "type": "npm",
       "script": "build",
-      "problemMatcher": "$tsc-watch",
-      "isBackground": true,
+      // `build` is a one-shot compile (not a watcher), so it must NOT be a
+      // background task — F5's preLaunchTask needs to run it to completion and
+      // then launch. A watch problemMatcher here would make VS Code wait
+      // forever for a "watching for changes" signal that never comes.
+      "problemMatcher": [],
+      "isBackground": false,
+      "options": {
+        "env": {
+          // Webpack 5.27 hashes with MD4, which OpenSSL 3 (Node 17+) removed
+          // from its default provider. This re-enables the legacy provider so
+          // the build works on modern Node. Remove once webpack is >= 5.61.
+          "NODE_OPTIONS": "--openssl-legacy-provider"
+        }
+      },
       "presentation": {
         "reveal": "never"
       },

@@ -26,9 +26,13 @@ const handleUpdateMessageActions = (value: string) => {
       break;
 
     case i18n.translate('readChangelog'):
+      // Build the marketplace URL from the extension's own id so it points at
+      // this fork's listing rather than a hardcoded upstream one.
       vscode.env.openExternal(
         vscode.Uri.parse(
-          'https://marketplace.visualstudio.com/items/PKief.material-icon-theme/changelog'
+          `https://marketplace.visualstudio.com/items/${
+            helpers.getExtensionContext().extension.id
+          }/changelog`
         )
       );
       break;

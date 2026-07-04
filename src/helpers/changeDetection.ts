@@ -37,6 +37,10 @@ const compareConfigs = (): {
     (result, configName) => {
       try {
         const themeConfig = getThemeConfig(configName);
+        // Read the global (User) value only, not workspaceValue. The generated
+        // icon SVGs live in the extension's shared install directory, so a
+        // per-workspace color would silently leak into every other window.
+        // Global-only keeps regeneration deterministic across windows.
         const configValue = themeConfig.globalValue ?? themeConfig.defaultValue;
         const currentState = getObjectPropertyValue(json.options, configName);
 
