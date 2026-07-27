@@ -584,6 +584,10 @@ export const folderIcons: FolderTheme[] = [
       },
       { name: 'folder-terraform', folderNames: ['terraform', '.terraform'] },
       {
+        name: 'folder-bicep',
+        folderNames: ['bicep', 'bicep-modules'],
+      },
+      {
         name: 'folder-mobile',
         folderNames: ['mobile', 'mobiles', 'portable', 'portability'],
       },

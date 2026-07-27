@@ -1177,7 +1177,19 @@ export const fileIcons: FileIcons = {
         'tailwind.ts',
         'tailwind.config.js',
         'tailwind.config.ts',
-        'tailwind.config.cjs'
+        'tailwind.config.cjs',
+        'tailwind.config.mjs'
+      ],
+    },
+    {
+      name: 'playwright',
+      fileNames: [
+        'playwright.config.js',
+        'playwright.config.ts',
+        'playwright.config.cjs',
+        'playwright.config.mjs',
+        'playwright-ct.config.js',
+        'playwright-ct.config.ts',
       ],
     },
     {
