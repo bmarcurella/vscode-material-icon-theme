@@ -16,6 +16,9 @@ const config = {
     filename: 'extension.js',
     libraryTarget: 'commonjs2',
     devtoolModuleFilenameTemplate: '../[resource-path]',
+    // webpack 5.27 defaults to MD4, which OpenSSL 3 (Node 17+) refuses to provide.
+    // Any modern algorithm works here; the hash is only used internally by webpack.
+    hashFunction: 'sha256',
   },
   devtool: 'source-map',
   externals: {
